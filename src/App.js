@@ -1,23 +1,36 @@
 import React, { useState } from 'react'
-import searchImages from './api'
-import SearchBar from './components/SearchBar'
-import ImageList from './components/ImageList'
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import Settings from "./components/Settings";
+import Weather from "./components/Weather";
+import NavigationButtons from "./components/NavigationButtons"; // Import
 
 function App() {
-  const [images, setImages] = useState([])
 
-  const onSubmit = async (term) => {
-    // setImages(await searchImages(term))
-    const result = await searchImages(term);
-    console.log(result);
-    setImages(result)
-  }
+  const [settings, setSettings] = useState({ city: "", unit: "metric" });
   
   return (
     <div>
-      <SearchBar onSubmit={onSubmit} />
-      <ImageList images={images} />
+        <Router>
+        <div>
+          <h1>Weather App</h1>
+          <NavigationButtons />
+          <Routes>
+            <Route path="/settings" element={
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                <Settings onSave={setSettings} />
+              </motion.div>
+            } />
+            <Route path="/weather" element={
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                <Weather settings={settings} />
+              </motion.div>
+            } />
+          </Routes>
+        </div>
+      </Router>
     </div>
+    
   )
 }
 
