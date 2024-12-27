@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import Settings from "./components/Settings";
 import Weather from "./components/Weather";
-import NavigationButtons from "./components/NavigationButtons"; // Import
+import NavigationButtons from "./components/NavigationButtons";
 
 function App() {
 
