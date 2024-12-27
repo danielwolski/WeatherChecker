@@ -15,6 +15,7 @@ function WeatherHourlyChart({ weatherData, settings }) {
 
   return (
     <div>
+      <h2>Today's weather details</h2>
       <Line
         data={{
           labels: hourlyLabels,

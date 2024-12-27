@@ -8,6 +8,8 @@ function WeatherDailyChart({ weatherData, settings }) {
   );
 
   return (
+    <div>
+      <h2>Forecast</h2>
       <Line
         data={{
           labels,
@@ -33,6 +35,8 @@ function WeatherDailyChart({ weatherData, settings }) {
           },
         }}
       />
+    </div>
+      
   );
 }
 
