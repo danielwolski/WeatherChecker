@@ -56,12 +56,7 @@ function WeatherHourlyChart({ weatherData, settings }) {
                   label: "Cloud Cover (%)",
                   data: hourlyCloudCover,
                   backgroundColor: "rgba(135, 206, 250, 0.5)",
-                },
-                {
-                  label: "Wind Speed (km/h)",
-                  data: hourlyWindSpeed,
-                  backgroundColor: "rgba(255, 165, 0, 0.5)",
-                },
+                }
               ],
             }}
             options={{
@@ -72,11 +67,35 @@ function WeatherHourlyChart({ weatherData, settings }) {
                 },
                 title: {
                   display: true,
-                  text: `Cloud Cover and Wind Speed`,
+                  text: `Cloud Cover`,
                 },
               },
             }}
-        />
+      />
+      <Bar
+            data={{
+              labels: hourlyLabels,
+              datasets: [
+                {
+                  label: "Wind Speed (km/h)",
+                  data: hourlyWindSpeed,
+                  backgroundColor: "rgba(255, 165, 0, 0.5)",
+                }
+              ],
+            }}
+            options={{
+              responsive: true,
+              plugins: {
+                legend: {
+                  position: "top",
+                },
+                title: {
+                  display: true,
+                  text: `Wind Speed`,
+                },
+              },
+            }}
+      />
     </div>
   );
 }

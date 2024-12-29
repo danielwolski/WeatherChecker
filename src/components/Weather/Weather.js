@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import axios from "axios";
 import WeatherForm from "./WeatherForm";
 import WeatherTabs from "./WeatherTabs";
-import "./Weather.scss";
 
 function Weather({ settings }) {
   const [city, setCity] = useState("");
@@ -60,7 +59,7 @@ function Weather({ settings }) {
 
   return (
     <div className="weather-container">
-      <h1>Check weather for city</h1>
+      <h1>Check the weather for a city</h1>
       <WeatherForm
         city={city}
         onCityChange={handleCityChange}

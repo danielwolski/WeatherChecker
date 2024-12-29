@@ -1,12 +1,24 @@
+.app-header {
+    background-color: rgb(143, 155, 155);
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+    margin-top: -21px;
+}
+
 .weather-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     font-family: Arial, sans-serif;
+    font-size: 20px;
     padding: 20px;
-    background-color: #f0f8ff;
+    background-color: #c5d5e2;
     color: #333;
     min-height: 100vh;
+
+    label {
+        font-size: 25px;
+    }
   
     h1 {
       color: #003366;
@@ -57,6 +69,7 @@
   
     .chart-container {
       width: 90%;
+      width: 800px;
       max-width: 800px;
       margin-bottom: 40px;
       background: white;
@@ -81,3 +94,39 @@
       font-size: 18px;
     }
   }
+
+
+  .navigation-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    justify-content: center;
+  
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+      border: none;
+      color: white;
+      flex: 1;
+      transition: transform 0.2s;
+  
+      &:hover {
+        transform: scale(1.1);
+      }
+  
+      &:active {
+        transform: scale(0.9);
+      }
+  
+      &.settings {
+        background-color: #007bff;
+      }
+  
+      &.weather {
+        background-color: #28a745;
+      }
+    }
+  }
+  

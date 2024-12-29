@@ -28,14 +28,6 @@
           cursor: pointer;
           font-size: 16px;
           padding: 5px;
-  
-          &.refresh {
-            color: #28a745; /* Green */
-          }
-  
-          &.delete {
-            color: #dc3545; /* Red */
-          }
         }
       }
     }
@@ -43,5 +35,5 @@
     .weather-content {
       margin-top: 20px;
     }
-  }
+}
   

@@ -4,16 +4,17 @@ import { motion } from "framer-motion";
 import Settings from "./components/Settings/Settings";
 import Weather from "./components/Weather/Weather";
 import NavigationButtons from "./components/NavigationButtons";
+import "./App.scss";
 
 function App() {
 
   const [settings, setSettings] = useState({ city: "", unit: "metric" });
   
   return (
-    <div>
+    <div class="app-header">
         <Router>
         <div>
-          <h1>Weather App</h1>
+          <h1>WEATHER APP</h1>
           <NavigationButtons />
           <Routes>
             <Route path="/settings" element={
