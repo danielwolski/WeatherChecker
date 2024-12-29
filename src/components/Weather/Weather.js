@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import WeatherForm from "./WeatherForm";
 import WeatherTabs from "./WeatherTabs";
+import { saveToDB, getFromDB, deleteFromDB } from "../../db/indexedDB";
 
 function Weather({ settings }) {
   const [city, setCity] = useState("");
@@ -10,22 +11,29 @@ function Weather({ settings }) {
 
   const apiKey = process.env.REACT_APP_VISUALCROSSING_API_KEY;
 
+  useEffect(() => {
+    const loadWeatherHistory = async () => {
+      const storedHistory = await getFromDB();
+      setWeatherHistory(storedHistory);
+    };
+    loadWeatherHistory();
+  }, []);
+
   const fetchWeather = async (cityName, isRefresh = false) => {
     try {
       const response = await axios.get(
         `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${cityName}?key=${apiKey}`
       );
+      const newEntry = { city: cityName, data: response.data };
       if (isRefresh) {
         setWeatherHistory((prevHistory) =>
           prevHistory.map((entry) =>
-            entry.city === cityName ? { city: cityName, data: response.data } : entry
+            entry.city === cityName ? newEntry : entry
           )
         );
       } else {
-        setWeatherHistory((prevHistory) => [
-          ...prevHistory,
-          { city: cityName, data: response.data },
-        ]);
+        setWeatherHistory((prevHistory) => [...prevHistory, newEntry]);
+        await saveToDB(newEntry);
       }
       setError("");
     } catch (error) {
@@ -51,10 +59,11 @@ function Weather({ settings }) {
     fetchWeather(cityName, true);
   };
 
-  const handleDelete = (cityName) => {
+  const handleDelete = async (cityName) => {
     setWeatherHistory((prevHistory) =>
       prevHistory.filter((entry) => entry.city !== cityName)
     );
+    await deleteFromDB(cityName);
   };
 
   return (
