@@ -1,100 +1,80 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import WeatherForm from "./WeatherForm";
-import WeatherInfo from "./WeatherInfo";
-import WeatherHourlyChart from "./WeatherHourlyChart";
-import WeatherDailyChart from "./WeatherDailyChart";
+import WeatherTabs from "./WeatherTabs";
 import "./Weather.scss";
 
 function Weather({ settings }) {
   const [city, setCity] = useState("");
-  const [submittedCity, setSubmittedCity] = useState("");
-  const [weatherData, setWeatherData] = useState(null);
+  const [weatherHistory, setWeatherHistory] = useState([]);
   const [error, setError] = useState("");
 
   const apiKey = process.env.REACT_APP_VISUALCROSSING_API_KEY;
 
-  useEffect(() => {
-    if (submittedCity) {
-      const fetchWeather = async () => {
-        try {
-          const response = await axios.get(
-            `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${submittedCity}?key=${apiKey}`
-          );
-          setWeatherData(response.data);
-          setError("");
-        } catch (error) {
-          if (error.response && error.response.status === 400) {
-            setError("Wrong city. Please try again.");
-          } else {
-            setError("An error occurred while fetching the weather data.");
-          }
-          setWeatherData(null);
-        }
-      };
-      fetchWeather();
+  const fetchWeather = async (cityName, isRefresh = false) => {
+    try {
+      const response = await axios.get(
+        `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${cityName}?key=${apiKey}`
+      );
+      if (isRefresh) {
+        setWeatherHistory((prevHistory) =>
+          prevHistory.map((entry) =>
+            entry.city === cityName ? { city: cityName, data: response.data } : entry
+          )
+        );
+      } else {
+        setWeatherHistory((prevHistory) => [
+          ...prevHistory,
+          { city: cityName, data: response.data },
+        ]);
+      }
+      setError("");
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        setError("Wrong city. Please try again.");
+      } else {
+        setError("An error occurred while fetching the weather data.");
+      }
     }
-  }, [submittedCity, apiKey]);
+  };
 
   const handleCityChange = (e) => setCity(e.target.value);
 
   const handleCitySubmit = (e) => {
     e.preventDefault();
-    setSubmittedCity(city);
-    setWeatherData(null);
-    setError("");
+    if (!weatherHistory.some((entry) => entry.city === city)) {
+      fetchWeather(city);
+    }
+    setCity("");
   };
 
-  if (!submittedCity) {
-    return (
-      <div className="weather-container">
-        <h1>Check weather for city</h1>
-        <WeatherForm
-          city={city}
-          onCityChange={handleCityChange}
-          onCitySubmit={handleCitySubmit}
-        />
-        {error && <p className="error-text">{error}</p>}
-      </div>
-    );
-  }
+  const handleRefresh = (cityName) => {
+    fetchWeather(cityName, true);
+  };
 
-  if (error) {
-    return (
-      <div className="weather-container">
-        <h1>Weather</h1>
-        <WeatherForm
-          city={city}
-          onCityChange={handleCityChange}
-          onCitySubmit={handleCitySubmit}
-        />
-        <p className="error-text">{error}</p>
-      </div>
+  const handleDelete = (cityName) => {
+    setWeatherHistory((prevHistory) =>
+      prevHistory.filter((entry) => entry.city !== cityName)
     );
-  }
-
-  if (!weatherData) {
-    return <p className="loading-text">Loading weather data for {submittedCity}...</p>;
-  }
+  };
 
   return (
     <div className="weather-container">
-      <h1>Weather in {submittedCity}</h1>
+      <h1>Check weather for city</h1>
       <WeatherForm
         city={city}
         onCityChange={handleCityChange}
         onCitySubmit={handleCitySubmit}
       />
-
-      <WeatherInfo weatherData={weatherData} />
-
-      <div className="chart-container">
-        <WeatherHourlyChart weatherData={weatherData} settings={settings} />
-      </div>
-        
-      <div className="chart-container">
-        <WeatherDailyChart weatherData={weatherData} settings={settings} />
-      </div>
+      {error && <p className="error-text">{error}</p>}
+      {weatherHistory.length > 0 && (
+        <WeatherTabs
+          weatherHistory={weatherHistory}
+          settings={settings}
+          onRefresh={handleRefresh}
+          onDelete={handleDelete}
+        />
+      )}
     </div>
   );
 }

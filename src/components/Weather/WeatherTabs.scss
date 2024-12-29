@@ -1,0 +1,47 @@
+.weather-tabs-container {
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+  
+      .tab-container {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+  
+        .tab {
+          padding: 10px 15px;
+          border: 1px solid #ccc;
+          background-color: #f9f9f9;
+          cursor: pointer;
+          border-radius: 5px;
+  
+          &.active {
+            background-color: #007bff;
+            color: white;
+          }
+        }
+  
+        .tab-action {
+          background: none;
+          border: none;
+          cursor: pointer;
+          font-size: 16px;
+          padding: 5px;
+  
+          &.refresh {
+            color: #28a745; /* Green */
+          }
+  
+          &.delete {
+            color: #dc3545; /* Red */
+          }
+        }
+      }
+    }
+  
+    .weather-content {
+      margin-top: 20px;
+    }
+  }
+  
