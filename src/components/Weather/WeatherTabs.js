@@ -51,12 +51,12 @@ function WeatherTabs({ weatherHistory, settings, onRefresh, onDelete }) {
               settings={settings}
             />
           </div>
-          <div className="chart-container">
+          {/* <div className="chart-container">
             <WeatherDailyChart
               weatherData={activeWeatherData.data}
               settings={settings}
             />
-          </div>
+          </div> */}
         </div>
       ) : (
         <p>Select a city to view weather data</p>
