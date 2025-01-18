@@ -1,40 +1,33 @@
 import React, { useState } from "react";
 import WeatherInfo from "./WeatherInfo";
 import WeatherHourlyChart from "./WeatherHourlyChart";
-import WeatherDailyChart from "./WeatherDailyChart";
 import "./WeatherTabs.scss";
 
-function WeatherTabs({ weatherHistory, settings, onRefresh, onDelete }) {
+function WeatherTabs({ weatherHistory, settings, onDelete }) {
   const [activeTab, setActiveTab] = useState(
-    weatherHistory.length > 0 ? weatherHistory[0].city : null
+    weatherHistory.length > 0 ? weatherHistory[0].key : null
   );
 
-  const handleTabClick = (city) => setActiveTab(city);
+  const handleTabClick = (key) => setActiveTab(key);
 
   const activeWeatherData = weatherHistory.find(
-    (entry) => entry.city === activeTab
+    (entry) => entry.key === activeTab
   );
 
   return (
     <div className="weather-tabs-container">
       <div className="tabs">
         {weatherHistory.map((entry) => (
-          <div key={entry.city} className="tab-container">
+          <div key={entry.key} className="tab-container">
             <button
-              className={`tab ${entry.city === activeTab ? "active" : ""}`}
-              onClick={() => handleTabClick(entry.city)}
+              className={`tab ${entry.key === activeTab ? "active" : ""}`}
+              onClick={() => handleTabClick(entry.key)}
             >
-              {entry.city}
-            </button>
-            <button
-              className="tab-action refresh"
-              onClick={() => onRefresh(entry.city)}
-            >
-              🔄
+              {entry.key}
             </button>
             <button
               className="tab-action delete"
-              onClick={() => onDelete(entry.city)}
+              onClick={() => onDelete(entry.key)}
             >
               ❌
             </button>
@@ -51,12 +44,6 @@ function WeatherTabs({ weatherHistory, settings, onRefresh, onDelete }) {
               settings={settings}
             />
           </div>
-          {/* <div className="chart-container">
-            <WeatherDailyChart
-              weatherData={activeWeatherData.data}
-              settings={settings}
-            />
-          </div> */}
         </div>
       ) : (
         <p>Select a city to view weather data</p>

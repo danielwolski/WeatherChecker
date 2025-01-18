@@ -6,6 +6,7 @@ import { saveToDB, getFromDB, deleteFromDB } from "../../db/indexedDB";
 
 function Weather({ settings }) {
   const [city, setCity] = useState("");
+  const [date, setDate] = useState("");
   const [weatherHistory, setWeatherHistory] = useState([]);
   const [error, setError] = useState("");
 
@@ -19,26 +20,28 @@ function Weather({ settings }) {
     loadWeatherHistory();
   }, []);
 
-  const fetchWeather = async (cityName, isRefresh = false) => {
+  const fetchWeather = async (cityName, selectedDate, isRefresh = false) => {
     try {
       const response = await axios.get(
-        `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${cityName}?key=${apiKey}`
+        `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${cityName}/${selectedDate}?key=${apiKey}`
       );
-      const newEntry = { city: cityName, data: response.data };
+
+      const key = `${cityName}-${selectedDate}`;
+      const newEntry = { key, data: response.data };
+
       if (isRefresh) {
         setWeatherHistory((prevHistory) =>
-          prevHistory.map((entry) =>
-            entry.city === cityName ? newEntry : entry
-          )
+          prevHistory.map((entry) => (entry.key === key ? newEntry : entry))
         );
       } else {
         setWeatherHistory((prevHistory) => [...prevHistory, newEntry]);
         await saveToDB(newEntry);
       }
+
       setError("");
     } catch (error) {
       if (error.response && error.response.status === 400) {
-        setError("Wrong city. Please try again.");
+        setError("Invalid city or date. Please try again.");
       } else {
         setError("An error occurred while fetching the weather data.");
       }
@@ -47,39 +50,43 @@ function Weather({ settings }) {
 
   const handleCityChange = (e) => setCity(e.target.value);
 
-  const handleCitySubmit = (e) => {
+  const handleDateChange = (e) => setDate(e.target.value);
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if (!weatherHistory.some((entry) => entry.city === city)) {
-      fetchWeather(city);
+    if (!city || !date) {
+      setError("Please enter both a city and a date.");
+      return;
     }
-    setCity("");
+
+    const key = `${city}-${date}`;
+    if (!weatherHistory.some((entry) => entry.key === key)) {
+      fetchWeather(city, date);
+    } else {
+      setError("Weather data for this city and date is already loaded.");
+    }
   };
 
-  const handleRefresh = (cityName) => {
-    fetchWeather(cityName, true);
-  };
-
-  const handleDelete = async (cityName) => {
-    setWeatherHistory((prevHistory) =>
-      prevHistory.filter((entry) => entry.city !== cityName)
-    );
-    await deleteFromDB(cityName);
+  const handleDelete = async (key) => {
+    setWeatherHistory((prevHistory) => prevHistory.filter((entry) => entry.key !== key));
+    await deleteFromDB(key);
   };
 
   return (
     <div className="weather-container">
-      <h1>Check the weather for a city</h1>
+      <h1>Check the weather for a city and date</h1>
       <WeatherForm
         city={city}
+        date={date}
         onCityChange={handleCityChange}
-        onCitySubmit={handleCitySubmit}
+        onDateChange={handleDateChange}
+        onSubmit={handleSubmit}
       />
       {error && <p className="error-text">{error}</p>}
       {weatherHistory.length > 0 && (
         <WeatherTabs
           weatherHistory={weatherHistory}
           settings={settings}
-          onRefresh={handleRefresh}
           onDelete={handleDelete}
         />
       )}

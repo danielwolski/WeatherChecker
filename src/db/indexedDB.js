@@ -1,13 +1,13 @@
-import { openDB } from 'idb';
+import { openDB } from "idb";
 
-const DATABASE_NAME = 'WeatherApp';
-const STORE_NAME = 'weatherHistory';
+const DATABASE_NAME = "WeatherApp";
+const STORE_NAME = "weatherHistory";
 
 export const initDB = async () => {
   return await openDB(DATABASE_NAME, 1, {
     upgrade(db) {
       if (!db.objectStoreNames.contains(STORE_NAME)) {
-        db.createObjectStore(STORE_NAME, { keyPath: 'city' });
+        db.createObjectStore(STORE_NAME, { keyPath: "key" });
       }
     },
   });
@@ -23,7 +23,7 @@ export const getFromDB = async () => {
   return await db.getAll(STORE_NAME);
 };
 
-export const deleteFromDB = async (cityName) => {
+export const deleteFromDB = async (key) => {
   const db = await initDB();
-  await db.delete(STORE_NAME, cityName);
+  await db.delete(STORE_NAME, key);
 };
