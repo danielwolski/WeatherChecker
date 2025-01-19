@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import WeatherForm from "./WeatherForm";
-import WeatherTabs from "./WeatherTabs";
-import { saveToDB, getFromDB, deleteFromDB } from "../../db/indexedDB";
+import CheckWeatherForm from "../CheckWeatherForm/CheckWeatherForm";
+import WeatherCheck from "../WeatherCheck/WeatherCheck";
+import { saveToDB, getFromDB, deleteFromDB } from "../../../db/indexedDB";
 
 function Weather({ settings }) {
   const [city, setCity] = useState("");
@@ -75,7 +75,7 @@ function Weather({ settings }) {
   return (
     <div className="weather-container">
       <h1>Check the weather for a city and date</h1>
-      <WeatherForm
+      <CheckWeatherForm
         city={city}
         date={date}
         onCityChange={handleCityChange}
@@ -84,7 +84,7 @@ function Weather({ settings }) {
       />
       {error && <p className="error-text">{error}</p>}
       {weatherHistory.length > 0 && (
-        <WeatherTabs
+        <WeatherCheck
           weatherHistory={weatherHistory}
           settings={settings}
           onDelete={handleDelete}

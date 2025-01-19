@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import WeatherInfo from "./WeatherInfo";
-import WeatherHourlyChart from "./WeatherHourlyChart";
-import "./WeatherTabs.scss";
+import BasicInfo from "../BasicInfo/BasicInfo";
+import WeatherHourlyChart from "../HourlyCharts/HourlyCharts";
+import "./WeatherCheck.scss";
 
-function WeatherTabs({ weatherHistory, settings, onDelete }) {
+function WeatherCheck({ weatherHistory, settings, onDelete }) {
   const [activeTab, setActiveTab] = useState(
     weatherHistory.length > 0 ? weatherHistory[0].key : null
   );
@@ -15,7 +15,7 @@ function WeatherTabs({ weatherHistory, settings, onDelete }) {
   );
 
   return (
-    <div className="weather-tabs-container">
+    <div className="weather-check-container">
       <div className="tabs">
         {weatherHistory.map((entry) => (
           <div key={entry.key} className="tab-container">
@@ -37,7 +37,7 @@ function WeatherTabs({ weatherHistory, settings, onDelete }) {
       {activeWeatherData ? (
         <div className="weather-content">
           <h1>Weather in {activeWeatherData.city}</h1>
-          <WeatherInfo weatherData={activeWeatherData.data} />
+          <BasicInfo weatherData={activeWeatherData.data} />
           <div className="chart-container">
             <WeatherHourlyChart
               weatherData={activeWeatherData.data}
@@ -52,4 +52,4 @@ function WeatherTabs({ weatherHistory, settings, onDelete }) {
   );
 }
 
-export default WeatherTabs;
+export default WeatherCheck;

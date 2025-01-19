@@ -1,7 +1,7 @@
 import React from "react";
 import { Line, Bar } from "react-chartjs-2";
 
-function WeatherHourlyChart({ weatherData, settings }) {
+function HourlyCharts({ weatherData, settings }) {
   const currentDay = weatherData.days[0];
   const hourlyLabels = currentDay.hours.map((hour) => hour.datetime);
   
@@ -219,4 +219,4 @@ function WeatherHourlyChart({ weatherData, settings }) {
   );
 }
 
-export default WeatherHourlyChart;
+export default HourlyCharts;

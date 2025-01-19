@@ -1,6 +1,7 @@
 import React from "react";
+import "./BasicInfo.scss";
 
-function WeatherInfo({ weatherData }) {
+function BasicInfo({ weatherData }) {
   return (
     <div className="weather-info">
       <h2>Location: {weatherData.resolvedAddress}</h2>
@@ -11,4 +12,4 @@ function WeatherInfo({ weatherData }) {
   );
 }
 
-export default WeatherInfo;
+export default BasicInfo;

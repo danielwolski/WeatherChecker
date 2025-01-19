@@ -1,6 +1,7 @@
 import React from "react";
+import "./CheckWeatherForm.scss"
 
-function WeatherForm({ city, date, onCityChange, onDateChange, onSubmit }) {
+function CheckWeatherForm({ city, date, onCityChange, onDateChange, onSubmit }) {
   return (
     <form onSubmit={onSubmit} className="weather-form">
       <input
@@ -20,4 +21,4 @@ function WeatherForm({ city, date, onCityChange, onDateChange, onSubmit }) {
   );
 }
 
-export default WeatherForm;
+export default CheckWeatherForm;

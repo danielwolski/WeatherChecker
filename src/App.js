@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { motion } from "framer-motion";
 import Settings from "./components/Settings/Settings";
-import Weather from "./components/Weather/Weather";
-import NavigationButtons from "./components/NavigationButtons";
+import Weather from "./components/CheckWeather/Weather/Weather";
+import NavigationButtons from "./components/NavigationMenu/NavigationMenu";
 import "./App.scss";
 
 function App() {
@@ -14,7 +14,6 @@ function App() {
     <div class="app-header">
         <Router>
         <div>
-          <h1>WEATHER APP</h1>
           <NavigationButtons />
           <Routes>
             <Route path="/settings" element={

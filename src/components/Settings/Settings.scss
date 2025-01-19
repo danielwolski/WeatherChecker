@@ -1,0 +1,44 @@
+.settings-form {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-bottom: 20px;
+
+    input {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+  }
+
+.settings-save-button {
+    padding: 10px 20px;
+    background-color: #007acc;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+
+    &:hover {
+      background-color: #005f99;
+    }
+  }
+
+.success-message {
+    margin-top: 20px;
+    color: #28a745;
+    font-size: 16px;
+    animation: fadeIn 0.3s ease-out;
+}
+  
+@keyframes fadeIn {
+    from {
+    opacity: 0;
+    }
+    to {
+    opacity: 1;
+    }
+}
+  

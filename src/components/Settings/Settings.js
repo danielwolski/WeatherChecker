@@ -1,19 +1,21 @@
 import React, { useState } from "react";
+import "./Settings.scss";
 
 function Settings({ onSave }) {
   const [unit, setUnit] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const handleSave = () => {
     onSave({ unit });
+    setSuccessMessage("Settings saved successfully!");
+    setTimeout(() => setSuccessMessage(""), 3000); 
   };
 
   return (
     <div className="weather-container">
       <h1>Settings</h1>
-      <div className="weather-form">
-        <label>
-          Temperature units:
-        </label>
+      <div className="settings-form">
+        <label>Temperature units:</label>
         <div>
           <label>
             <input
@@ -32,8 +34,12 @@ function Settings({ onSave }) {
             Fahrenheit
           </label>
         </div>
-        <button onClick={handleSave}>Save</button>
       </div>
+      <button className="settings-save-button" onClick={handleSave}>
+        Save
+      </button>
+
+      {successMessage && <p className="success-message">{successMessage}</p>}
     </div>
   );
 }
